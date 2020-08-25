@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>33db086b-74aa-43ba-b948-f6c9e2430dee</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
+    <PackageReference Include="MySql.Data" Version="8.0.21" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Restaurant.BAL\Restaurant.BAL.csproj" />
+    <ProjectReference Include="..\Restaurant.BusinessEntities\Restaurant.BusinessEntities.csproj" />
+    <ProjectReference Include="..\Restaurant.Utilty\Restaurant.Utilty.csproj" />
+  </ItemGroup>
+
+
+</Project>

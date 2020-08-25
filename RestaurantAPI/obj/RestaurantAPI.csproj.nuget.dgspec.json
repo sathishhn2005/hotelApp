@@ -1,0 +1,354 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\RestaurantAPI\\RestaurantAPI.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.BAL\\Restaurant.BAL.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.BAL\\Restaurant.BAL.csproj",
+        "projectName": "Restaurant.BAL",
+        "projectPath": "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.BAL\\Restaurant.BAL.csproj",
+        "packagesPath": "C:\\Users\\Guru\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.BAL\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Guru\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.telerik.com/nuget": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {
+              "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.BusinessEntities\\Restaurant.BusinessEntities.csproj": {
+                "projectPath": "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.BusinessEntities\\Restaurant.BusinessEntities.csproj"
+              },
+              "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.DAL\\Restaurant.DAL.csproj": {
+                "projectPath": "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.DAL\\Restaurant.DAL.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.BusinessEntities\\Restaurant.BusinessEntities.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.BusinessEntities\\Restaurant.BusinessEntities.csproj",
+        "projectName": "Restaurant.BusinessEntities",
+        "projectPath": "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.BusinessEntities\\Restaurant.BusinessEntities.csproj",
+        "packagesPath": "C:\\Users\\Guru\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.BusinessEntities\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Guru\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.telerik.com/nuget": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.DAL\\Restaurant.DAL.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.DAL\\Restaurant.DAL.csproj",
+        "projectName": "Restaurant.DAL",
+        "projectPath": "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.DAL\\Restaurant.DAL.csproj",
+        "packagesPath": "C:\\Users\\Guru\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.DAL\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Guru\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.telerik.com/nuget": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {
+              "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.BusinessEntities\\Restaurant.BusinessEntities.csproj": {
+                "projectPath": "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.BusinessEntities\\Restaurant.BusinessEntities.csproj"
+              },
+              "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.Utilty\\Restaurant.Utilty.csproj": {
+                "projectPath": "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.Utilty\\Restaurant.Utilty.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.Utilty\\Restaurant.Utilty.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.Utilty\\Restaurant.Utilty.csproj",
+        "projectName": "Restaurant.Utilty",
+        "projectPath": "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.Utilty\\Restaurant.Utilty.csproj",
+        "packagesPath": "C:\\Users\\Guru\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.Utilty\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Guru\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.telerik.com/nuget": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "dependencies": {
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[3.1.7, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[3.1.7, )"
+            },
+            "Microsoft.Extensions.Configuration.Binder": {
+              "target": "Package",
+              "version": "[3.1.7, )"
+            },
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[8.0.21, )"
+            },
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\RestaurantAPI\\RestaurantAPI.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\RestaurantAPI\\RestaurantAPI.csproj",
+        "projectName": "RestaurantAPI",
+        "projectPath": "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\RestaurantAPI\\RestaurantAPI.csproj",
+        "packagesPath": "C:\\Users\\Guru\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\RestaurantAPI\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Guru\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.telerik.com/nuget": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {
+              "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.BAL\\Restaurant.BAL.csproj": {
+                "projectPath": "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.BAL\\Restaurant.BAL.csproj"
+              },
+              "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.BusinessEntities\\Restaurant.BusinessEntities.csproj": {
+                "projectPath": "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.BusinessEntities\\Restaurant.BusinessEntities.csproj"
+              },
+              "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.Utilty\\Restaurant.Utilty.csproj": {
+                "projectPath": "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.Utilty\\Restaurant.Utilty.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
+              "target": "Package",
+              "version": "[1.10.9, )"
+            },
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[8.0.21, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
