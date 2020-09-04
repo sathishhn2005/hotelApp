@@ -59,11 +59,11 @@ namespace Restaurant.DAL
             {
                 List<MySqlParameter> parameters = new List<MySqlParameter>
                 {
-                    new MySqlParameter("name",objInsertUser.Name),
-                    new MySqlParameter("user_name",objInsertUser.UserName),
-                    new MySqlParameter("password", objInsertUser.Password),
-                    new MySqlParameter("confirmpassword", objInsertUser.ConfirmPassword),
-                    new MySqlParameter("phonenumber", objInsertUser.PhoneNumber)
+                    new MySqlParameter("SAName",objInsertUser.Name),
+                    new MySqlParameter("UserName",objInsertUser.UserName),
+                    new MySqlParameter("Pswd", objInsertUser.Password),
+                    new MySqlParameter("ConfirmPswd", objInsertUser.ConfirmPassword),
+                    new MySqlParameter("PhNo", objInsertUser.PhoneNumber)
                 };
 
                 var output = sqlHelper.executeSP<int>(parameters, "SP_InsertUsers_SuperAdmin");
@@ -215,8 +215,8 @@ namespace Restaurant.DAL
             {
                 List<MySqlParameter> parameters = new List<MySqlParameter>
                 {
-                    new MySqlParameter("CompanyId",objTax.CompanyID),
-                    new MySqlParameter("Tax",objTax.Tax),
+                    new MySqlParameter("CompnId",objTax.CompanyID),
+                    new MySqlParameter("Taxpercent",objTax.Tax),
                 };
 
                 var output = sqlHelper.executeSP<int>(parameters, "SP_UpdateTax");
@@ -236,13 +236,13 @@ namespace Restaurant.DAL
             {
                 List<MySqlParameter> parameters = new List<MySqlParameter>
                 {
-                    new MySqlParameter("CompanyId",objRenewal.CompanyID),
-                    new MySqlParameter("StartDate",objRenewal.StartDate),
-                    new MySqlParameter("EndDate",objRenewal.EndDate),
-                    new MySqlParameter("TotalDays",objRenewal.TotalDays),
-                    new MySqlParameter("Price",objRenewal.Price),
-                    new MySqlParameter("Tax",objRenewal.Tax),
-                    new MySqlParameter("TotalAmount",objRenewal.TotalAmount),
+                    new MySqlParameter("CompnId",objRenewal.CompanyID),
+                    new MySqlParameter("SDate",objRenewal.StartDate),
+                    new MySqlParameter("EDate",objRenewal.EndDate),
+                    new MySqlParameter("TotDays",objRenewal.TotalDays),
+                    new MySqlParameter("PriceAmt",objRenewal.Price),
+                    new MySqlParameter("TaxAmt",objRenewal.Tax),
+                    new MySqlParameter("TotalAmt",objRenewal.TotalAmount),
                 };
 
                 var output = sqlHelper.executeSP<int>(parameters, "SP_Renewal");
@@ -292,6 +292,179 @@ namespace Restaurant.DAL
                 throw ex;
             }
             return lst;
+        }
+        public List<Admin> IsUserExists(LoginSignUp obj)
+        {
+            List<Admin> lst = new List<Admin>();
+            
+            try
+            {
+                List<MySqlParameter> parameters = new List<MySqlParameter>
+                {
+                    new MySqlParameter("UserN",obj.UserName),
+                    new MySqlParameter("Pswd",obj.Password),
+                    
+
+                };
+
+                var output = sqlHelper.executeSP<DataSet>(parameters, "SP_IsUserExits");
+                if (output.Tables[0].Rows.Count > 0)
+                {
+                    lst = (from DataRow dr in output.Tables[0].Rows
+                           select new Admin()
+                           {
+                               CompanyID = (long)dr["CompanyId"],
+                               UserName = Convert.ToString(dr["UserName"]),
+                               AdminSubscriptionId = (long)(dr["AdminSubscriptionId"]),
+                               StartDate = Convert.ToDateTime(dr["StartDate"]),
+
+                               EndDate = Convert.ToDateTime(dr["EndDate"]),
+                               TotalDays = Convert.ToInt32(dr["TotalDays"]),
+                               Price = (long)(dr["Price"]),
+                               TotalAmount = (long)(dr["TotalAmount"]),
+
+                               Tax = (int)(dr["Tax"]),
+                               PaymentType = Convert.ToString(dr["PaymentType"]),
+                               PaymentStatus = Convert.ToString(dr["PaymentStatus"]),
+                               Comments = Convert.ToString(dr["Comments"]),
+
+                           }).ToList();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return lst;
+        }
+
+        public long RegisterAdmin(Admin obj)
+        {
+            long returnCode = -1;
+
+            try
+            {
+
+                List<MySqlParameter> parameters = new List<MySqlParameter>
+                {
+                    new MySqlParameter("CompanyName",obj.CompanyName),
+                    new MySqlParameter("UserName",obj.UserName),
+                    new MySqlParameter("Password", obj.Password),
+                    new MySqlParameter("PhoneNumber", obj.PhoneNumber),
+                    new MySqlParameter("Address", obj.Address),
+                    new MySqlParameter("AccRegisteredDate", obj.AccRegisteredDate),
+                    new MySqlParameter("Cost", obj.Cost),
+                    new MySqlParameter("Status", obj.Status)
+
+                };
+
+                var output = sqlHelper.executeSP<int>(parameters, "SP_InsertAdmin");
+                returnCode = Convert.ToInt64(output);
+                return returnCode;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            // return returnCode;
+        }
+        public long UpdateSubAdmin(Admin obj)
+        {
+            long returnCode = -1;
+
+            try
+            {
+
+                List<MySqlParameter> parameters = new List<MySqlParameter>
+                {
+                    new MySqlParameter("CompanyId",obj.CompanyID),
+                    new MySqlParameter("AdminSubscriptionId ", obj.AdminSubscriptionId),
+                    new MySqlParameter("PaymentType",obj.PaymentType),
+                    new MySqlParameter("Comments", obj.Comments),
+                    new MySqlParameter("TotalAmount", obj.TotalAmount),
+                };
+
+                var output = sqlHelper.executeSP<int>(parameters, "SP_SubscriptionUpdate");
+                returnCode = Convert.ToInt64(output);
+                return returnCode;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            // return returnCode;
+        }
+        public List<Admin> GetSubscriptionSA(string SAUserName)
+        {
+            if (SAUserName == null)
+                SAUserName = "";
+            List<Admin> lst = new List<Admin>();
+
+            try
+            {
+                List<MySqlParameter> parameters = new List<MySqlParameter>
+                {
+                    new MySqlParameter("SAUserName",SAUserName),
+
+                };
+
+                var output = sqlHelper.executeSP<DataSet>(parameters, "SP_GetSubscriptionSA");
+                if (output.Tables[0].Rows.Count > 0)
+                {
+                    lst = (from DataRow dr in output.Tables[0].Rows
+                           select new Admin()
+                           {
+
+                               AdminSubscriptionId = (int)dr["AdminSubscriptionId"],
+                               StartDate = Convert.ToDateTime(dr["StartDate"]),
+                               EndDate = Convert.ToDateTime(dr["EndDate"]),
+                               CompanyID = (long)dr["CompanyID"],
+                               TotalDays = (int)dr["TotalDays"],
+                               Price = (long)dr["Price"],
+
+                               TotalAmount = (long)dr["TotalAmount"],
+                               Tax = (int)dr["Tax"],
+                               PaymentStatus = dr["PaymentStatus"].ToString(),
+                               PaymentType = dr["PaymentType"].ToString(),
+                               Comments = dr["Comments"].ToString(),
+                           }).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return lst;
+        }
+        public long IsSuperAdminExists(LoginSignUp obj)
+        {
+            long returnCode = -1;
+
+            try
+            {
+                List<MySqlParameter> parameters = new List<MySqlParameter>
+                {
+                    new MySqlParameter("UserN",obj.UserName),
+                    new MySqlParameter("Pswd",obj.Password),
+
+
+                };
+
+                var output = sqlHelper.executeSP<DataSet>(parameters, "SP_IsSAUserExits");
+                if (output.Tables[0].Rows.Count > 0)
+                {
+                    returnCode = 1;
+                }
+                else
+                    returnCode = 0;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return returnCode;
         }
     }
 }

@@ -3,6 +3,11 @@ using Restaurant.DAL;
 using System;
 using System.Transactions;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Net;
+using System.IO;
+using System.Data;
 
 namespace Restaurant.BAL
 {
@@ -99,7 +104,20 @@ namespace Restaurant.BAL
             using TransactionScope transactionScope = new TransactionScope();
             try
             {
+
+
+                if (!string.IsNullOrEmpty(obj.PhoneNumber))
+                {
+                    string MobileNumber = obj.PhoneNumber;
+                    string url = "http://2factor.in/API/V1/048ac9fe-e85a-11ea-9fa5-0200cd936042/SMS/" + MobileNumber + '/' + "AUTOGEN/HotelApp";
+                    var responseString = JObject.Parse(Response(url));
+                    string Status = responseString["Status"].ToString();
+                    string Details = responseString["Details"].ToString();
+                    obj.Details = Details;
+                    string[] response = { Status, Details };
+                }
                 lst = objDAL.InsertCust(obj);
+                lst[0].Details = obj.Details;
                 transactionScope.Complete();
                 transactionScope.Dispose();
 
@@ -112,15 +130,60 @@ namespace Restaurant.BAL
 
             return lst;
         }
-        
-        public long InsertProducts(FoodProducts obj)
+        public string VerifyOTP(string Details, long EnteredOTP)
+        {
+            string Status = string.Empty;
+            string responseString = string.Empty;
+            try
+            {
+                string url = "http://2factor.in/API/V1/048ac9fe-e85a-11ea-9fa5-0200cd936042/SMS/" + "VERIFY/" + Details + '/' + EnteredOTP;
+                responseString = Response(url);
+                if (!string.IsNullOrEmpty(responseString))
+                {
+                    var res = JObject.Parse(responseString);
+                    Status = res["Status"].ToString();
+                    Details = res["Details"].ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return Status;
+        }
+        private string Response(string URL)
+        {
+            string responseString = string.Empty;
+            try
+            {
+                HttpWebRequest httpWReq = (HttpWebRequest)WebRequest.Create(URL);
+                httpWReq.Method = "GET";
+                httpWReq.ContentType = "application/x-www-form-urlencoded";
+                HttpWebResponse response = (HttpWebResponse)httpWReq.GetResponse();
+                if (response != null)
+                    responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            }
+            catch (Exception ex)
+            {
+                responseString = "";
+
+            }
+            return responseString;
+        }
+
+        public long InsertProducts(dynamic obj)
         {
             long returnCode = -1;
 
             using TransactionScope transactionScope = new TransactionScope();
             try
             {
-                returnCode = objDAL.InsertFoodProducts(obj);
+                // returnCode = objDAL.InsertFoodProducts(obj);
+                // List<FoodProducts> UserList = JsonConvert.DeserializeObject<List<FoodProducts>>(obj);
+              
+
+                var model = JsonConvert.DeserializeObject(obj);
+
                 transactionScope.Complete();
                 transactionScope.Dispose();
 
@@ -193,7 +256,106 @@ namespace Restaurant.BAL
 
             return lst;
         }
+        public List<Admin> IsUserExists(LoginSignUp obj)
+        {
+            List<Admin> lst = new List<Admin>();
 
+            using TransactionScope transactionScope = new TransactionScope();
+            try
+            {
+                lst = objDAL.IsUserExists(obj);
+                lst[0].TotalDays = Convert.ToInt32((lst[0].EndDate - lst[0].StartDate).TotalDays);
+                transactionScope.Complete();
+                transactionScope.Dispose();
 
+            }
+            catch (Exception ex)
+            {
+                transactionScope.Dispose();
+                throw ex;
+            }
+
+            return lst;
+        }
+        public long AdminRegister(Admin obj)
+        {
+            long returnCode = -1;
+
+            using TransactionScope transactionScope = new TransactionScope();
+            try
+            {
+                returnCode = objDAL.RegisterAdmin(obj);
+                transactionScope.Complete();
+                transactionScope.Dispose();
+
+            }
+            catch (Exception ex)
+            {
+                transactionScope.Dispose();
+                throw ex;
+            }
+
+            return returnCode;
+        }
+        public long UpdateSubscription(Admin obj)
+        {
+            long returnCode = -1;
+
+            using TransactionScope transactionScope = new TransactionScope();
+            try
+            {
+                returnCode = objDAL.UpdateSubAdmin(obj);
+                transactionScope.Complete();
+                transactionScope.Dispose();
+
+            }
+            catch (Exception ex)
+            {
+                transactionScope.Dispose();
+                throw ex;
+            }
+
+            return returnCode;
+        }
+        public List<Admin> GetSASubscription(string strname)
+        {
+            List<Admin> lst = new List<Admin>();
+
+            using TransactionScope transactionScope = new TransactionScope();
+            try
+            {
+                lst = objDAL.GetSubscriptionSA(strname);
+                transactionScope.Complete();
+                transactionScope.Dispose();
+
+            }
+            catch (Exception ex)
+            {
+                transactionScope.Dispose();
+                throw ex;
+            }
+
+            return lst;
+        }
+        public long SAUserExists(LoginSignUp obj)
+        {
+            long returnCode = -1;
+
+            using TransactionScope transactionScope = new TransactionScope();
+            try
+            {
+                returnCode = objDAL.IsSuperAdminExists(obj);
+                transactionScope.Complete();
+                transactionScope.Dispose();
+
+            }
+            catch (Exception ex)
+            {
+                transactionScope.Dispose();
+                throw ex;
+            }
+
+            return returnCode;
+        }
     }
 }

@@ -13,7 +13,7 @@ namespace Restaurant.BusinessEntities
         private int discount = 0;
         private int unitPrice = 0;
         private int quantity = 0;
-        private string phoneNumber = string.Empty;;
+        private string phoneNumber = string.Empty;
         private int tax = 0;
         private int tableNo = 0;
         private string customerName = string.Empty;

@@ -1,0 +1,17 @@
+C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\Restaurant.BAL\bin\Release\netcoreapp3.1\Restaurant.BAL.deps.json
+C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\Restaurant.BAL\bin\Release\netcoreapp3.1\Restaurant.BAL.dll
+C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\Restaurant.BAL\bin\Release\netcoreapp3.1\Restaurant.BAL.pdb
+C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\Restaurant.BAL\bin\Release\netcoreapp3.1\Newtonsoft.Json.dll
+C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\Restaurant.BAL\bin\Release\netcoreapp3.1\Restaurant.BusinessEntities.dll
+C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\Restaurant.BAL\bin\Release\netcoreapp3.1\Restaurant.DAL.dll
+C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\Restaurant.BAL\bin\Release\netcoreapp3.1\Restaurant.Utilty.dll
+C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\Restaurant.BAL\bin\Release\netcoreapp3.1\Restaurant.BusinessEntities.pdb
+C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\Restaurant.BAL\bin\Release\netcoreapp3.1\Restaurant.DAL.pdb
+C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\Restaurant.BAL\bin\Release\netcoreapp3.1\Restaurant.Utilty.pdb
+C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\Restaurant.BAL\obj\Release\netcoreapp3.1\Restaurant.BAL.csprojAssemblyReference.cache
+C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\Restaurant.BAL\obj\Release\netcoreapp3.1\Restaurant.BAL.AssemblyInfoInputs.cache
+C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\Restaurant.BAL\obj\Release\netcoreapp3.1\Restaurant.BAL.AssemblyInfo.cs
+C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\Restaurant.BAL\obj\Release\netcoreapp3.1\Restaurant.BAL.csproj.CoreCompileInputs.cache
+C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\Restaurant.BAL\obj\Release\netcoreapp3.1\Restaurant.BAL.csproj.CopyComplete
+C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\Restaurant.BAL\obj\Release\netcoreapp3.1\Restaurant.BAL.dll
+C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\Restaurant.BAL\obj\Release\netcoreapp3.1\Restaurant.BAL.pdb

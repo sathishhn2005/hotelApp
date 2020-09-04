@@ -6,9 +6,13 @@ namespace Restaurant.BusinessEntities
 {
     public class CustRegister
     {
+
         private string name = String.Empty;
         private long companyID = 0;
         private long customerId = 0;
+        private string details = string.Empty;
+        
+        
         
         private string serialNo = String.Empty;
         private string address = String.Empty;
@@ -75,7 +79,13 @@ namespace Restaurant.BusinessEntities
             set { otp = value; }
         }
 
-
+        public string Details
+        {
+            get { return details; }
+            set { details = value; }
+        }
+      
+        
 
 
     }

@@ -6,6 +6,8 @@ using Restaurant.BAL;
 using Restaurant.BusinessEntities;
 using Restaurant.Utilty;
 
+
+
 namespace RestaurantAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -39,14 +41,14 @@ namespace RestaurantAPI.Controllers
 
             else
                 return NotFound();
-            
+
 
         }
         [HttpPost]
         [Route("[action]")]
-        public IActionResult PostCustomerAndOrder([FromBody] LoginSignUp obj)
+        public IActionResult SuperAdminInsert([FromBody] LoginSignUp obj)
         {
-            
+
             long returnCode = -1;
             try
             {
@@ -56,7 +58,7 @@ namespace RestaurantAPI.Controllers
             {
                 throw ex;
             }
-            if (returnCode > 0)
+            if (returnCode >= 0)
                 return Ok(returnCode);
 
             else
@@ -66,7 +68,7 @@ namespace RestaurantAPI.Controllers
         [Route("[action]")]
         public IActionResult UpdateSAPassword([FromBody] LoginSignUp obj)
         {
-            
+
             long returnCode = -1;
             try
             {
@@ -91,6 +93,10 @@ namespace RestaurantAPI.Controllers
             try
             {
                 lst = objBAL.InsertCustomer(obj);
+                //var client = new RestClient("http://2factor.in/API/V1/293832-67745-11e5-88de-5600000c6b13/SMS/991991199/AUTOGEN");
+                //var request = new RestRequest(Method.GET);
+                //request.AddHeader("content-type", "application/x-www-form-urlencoded");
+                //IRestResponse response = client.Execute(request);
             }
             catch (Exception ex)
             {
@@ -124,8 +130,10 @@ namespace RestaurantAPI.Controllers
         }
         [HttpPost]
         [Route("[action]")]
-        public IActionResult InsertFoodProducts([FromBody] FoodProducts obj)
+        public IActionResult InsertFoodProducts([FromBody] dynamic obj)
         {
+           // JavaScriptSerializer js = new JavaScriptSerializer().Deserialize<FoodProducts>(obj);
+
 
             long returnCode = -1;
             try
@@ -164,13 +172,13 @@ namespace RestaurantAPI.Controllers
         }
         [HttpPost]
         [Route("[action]")]
-        public IActionResult Renewal(Renewal obj)
+        public IActionResult Renew([FromBody]Renewal obj)
         {
 
             long returnCode = -1;
             try
             {
-                returnCode = objBAL.RenewalSubscription(obj);
+               returnCode = objBAL.RenewalSubscription(obj);
             }
             catch (Exception ex)
             {
@@ -202,6 +210,131 @@ namespace RestaurantAPI.Controllers
             else
                 return NotFound();
         }
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult IsUserExists(LoginSignUp obj)
+        {
 
+            List<Admin> lst = new List<Admin>();
+            try
+            {
+                if (!string.IsNullOrEmpty(obj.UserName) && !string.IsNullOrEmpty(obj.Password))
+                    lst = objBAL.IsUserExists(obj);
+                else
+                    return NotFound("Username & Password not entered");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (lst.Count > 0)
+                return Ok(lst);
+
+            else
+                return NotFound();
+        }
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult AdminReg([FromBody] Admin obj)
+        {
+
+            long returnCode = -1;
+            try
+            {
+                returnCode = objBAL.AdminRegister(obj);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (returnCode > 0)
+                return Ok(returnCode);
+
+            else
+                return NotFound();
+        }
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult SubAdminUpdate([FromBody] Admin obj)
+        {
+
+            long returnCode = -1;
+            try
+            {
+                returnCode = objBAL.UpdateSubscription(obj);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (returnCode > 0)
+                return Ok(returnCode);
+
+            else
+                return NotFound();
+        }
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetSubSA(string SAName)
+        {
+
+
+            List<Admin> lst = new List<Admin>();
+            try
+            {
+                lst = objBAL.GetSASubscription(SAName);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (lst.Count > 0)
+                return Ok(lst);
+
+            else
+                return NotFound();
+        }
+        
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult OTPVerification([FromBody] CustRegister obj)
+        {
+
+            if (!string.IsNullOrEmpty(obj.Details) && obj.OTP > 0)
+            {
+                string Details = obj.Details;
+                long EnteredOTP = obj.OTP;
+                string response = objBAL.VerifyOTP(Details, EnteredOTP);
+                if (response.Length > 0)
+                    return Ok(response);
+                else
+                    return BadRequest();
+
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult IsSAUserExists([FromBody] LoginSignUp obj)
+        {
+
+            long returnCode = -1;
+            try
+            {
+                returnCode = objBAL.SAUserExists(obj);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (returnCode >= 0)
+                return Ok(returnCode);
+
+            else
+                return BadRequest();
+        }
     }
 }

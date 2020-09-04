@@ -13,6 +13,7 @@ namespace Restaurant.BusinessEntities
         private string password = String.Empty;
         private string confirmPassword = String.Empty;
         private long otp = 0;
+        private long user_Id = 0;
 
 
 
@@ -50,7 +51,10 @@ namespace Restaurant.BusinessEntities
             set { otp = value; }
         }
 
-
-
+        public long User_Id
+        {
+            get { return user_Id; }
+            set { user_Id = value; }
+        }
     }
 }
