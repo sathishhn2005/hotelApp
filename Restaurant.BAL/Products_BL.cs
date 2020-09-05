@@ -171,18 +171,15 @@ namespace Restaurant.BAL
             return responseString;
         }
 
-        public long InsertProducts(dynamic obj)
+        public List<FoodProducts> InsertProducts(List<FoodProducts> lstFP)
         {
-            long returnCode = -1;
+            List<FoodProducts> lstFoodProducts = new List<FoodProducts>();
 
             using TransactionScope transactionScope = new TransactionScope();
             try
             {
-                // returnCode = objDAL.InsertFoodProducts(obj);
-                // List<FoodProducts> UserList = JsonConvert.DeserializeObject<List<FoodProducts>>(obj);
-              
-
-                var model = JsonConvert.DeserializeObject(obj);
+                lstFoodProducts = objDAL.InsertFoodProducts(lstFP);
+                //var model = JsonConvert.DeserializeObject(obj);
 
                 transactionScope.Complete();
                 transactionScope.Dispose();
@@ -194,7 +191,7 @@ namespace Restaurant.BAL
                 throw ex;
             }
 
-            return returnCode;
+            return lstFoodProducts;
         }
         public long TaxUpdate(Cart obj)
         {

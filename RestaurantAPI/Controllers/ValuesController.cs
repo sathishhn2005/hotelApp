@@ -130,22 +130,21 @@ namespace RestaurantAPI.Controllers
         }
         [HttpPost]
         [Route("[action]")]
-        public IActionResult InsertFoodProducts([FromBody] dynamic obj)
+        public IActionResult InsertFoodProducts([FromBody] List<FoodProducts> obj)
         {
-           // JavaScriptSerializer js = new JavaScriptSerializer().Deserialize<FoodProducts>(obj);
+            // JavaScriptSerializer js = new JavaScriptSerializer().Deserialize<FoodProducts>(obj);
+            List<FoodProducts> lstFoodProducts = new List<FoodProducts>();
 
-
-            long returnCode = -1;
             try
             {
-                returnCode = objBAL.InsertProducts(obj);
+                lstFoodProducts = objBAL.InsertProducts(obj);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            if (returnCode > 0)
-                return Ok(obj);
+            if (lstFoodProducts.Count > 0)
+                return Ok(lstFoodProducts);
 
             else
                 return NotFound();

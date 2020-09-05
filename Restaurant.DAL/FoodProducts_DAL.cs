@@ -99,30 +99,49 @@ namespace Restaurant.DAL
             }
         }
 
-        public long InsertFoodProducts(FoodProducts objFoodProducts)
+        public List<FoodProducts> InsertFoodProducts(List<FoodProducts> lstFP)
         {
-            long returnCode = -1;
-
+            List<FoodProducts> lstFoodProducts = new List<FoodProducts>();
             try
             {
-                List<MySqlParameter> parameters = new List<MySqlParameter>
+                foreach (var item in lstFP)
                 {
-                    new MySqlParameter("CompanyID",objFoodProducts.CompanyID),
-                    new MySqlParameter("Price",objFoodProducts.Price),
-                    new MySqlParameter("FoodName",objFoodProducts.FoodName),
-                    new MySqlParameter("CategoryName", objFoodProducts.CategoryName),
-                    new MySqlParameter("Description", objFoodProducts.Description),
-                    new MySqlParameter("ImageSource", objFoodProducts.ImageSource),
+                    List<MySqlParameter> parameters = new List<MySqlParameter>
+                {
+                    new MySqlParameter("CompID",item.CompanyID),
+                    new MySqlParameter("PriceAmt",item.Price),
+                    new MySqlParameter("Foodnam",item.FoodName),
+                    new MySqlParameter("CatgryName", item.CategoryName),
+                    new MySqlParameter("Descr", item.Description),
+                    new MySqlParameter("ImageSou", item.ImageSource),
                 };
 
-                var output = sqlHelper.executeSP<int>(parameters, "SP_InsertFoodProducts");
-                returnCode = Convert.ToInt64(output);
-                return returnCode;
+                    var output = sqlHelper.executeSP<DataSet>(parameters, "SP_InsertFoodProducts");
+                    if (output.Tables[0].Rows.Count > 0)
+                    {
+                        lstFoodProducts = (from DataRow dr in output.Tables[0].Rows
+                                           select new FoodProducts()
+                                           {
+
+                                               CompanyID = (long)dr["CompanyID"],
+                                               FoodID = (long)dr["FoodProductId"],
+                                               CategoryID = (long)dr["FoodCategoryId"],
+                                               CategoryName = dr["CategoryName"].ToString(),
+
+                                               FoodName = dr["FoodName"].ToString(),
+                                               ImageSource = (byte)dr["ImageSource"],
+                                               Price = (long)dr["Price"],
+                                               Description = dr["Description"].ToString(),
+
+                                           }).ToList();
+                    }
+                }
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+            return lstFoodProducts;
         }
         public List<CustRegister> InsertCust(CustRegister objInsertCust)
         {
@@ -296,14 +315,14 @@ namespace Restaurant.DAL
         public List<Admin> IsUserExists(LoginSignUp obj)
         {
             List<Admin> lst = new List<Admin>();
-            
+
             try
             {
                 List<MySqlParameter> parameters = new List<MySqlParameter>
                 {
                     new MySqlParameter("UserN",obj.UserName),
                     new MySqlParameter("Pswd",obj.Password),
-                    
+
 
                 };
 

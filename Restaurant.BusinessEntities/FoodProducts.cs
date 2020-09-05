@@ -9,7 +9,7 @@ namespace Restaurant.BusinessEntities
         private long foodID = 0;
         private long price = 0;
         private string foodName = String.Empty;
-        private int categoryID = 0;
+        private long categoryID = 0;
         private string categoryName = string.Empty;
         private long companyID = 0;
         private string description = String.Empty;
@@ -19,11 +19,11 @@ namespace Restaurant.BusinessEntities
         private DateTime modifiedAt = DateTime.MaxValue;
         private decimal taxPercent = Decimal.Zero;
         private string isDiscountable = String.Empty;
-        private byte[] imageSource = new byte[0];
+        private byte imageSource;
 
         #endregion
 
-        public byte[] ImageSource
+        public byte ImageSource
         {
             get { return imageSource; }
             set { imageSource = value; }
@@ -54,7 +54,7 @@ namespace Restaurant.BusinessEntities
         /// <summary>
         /// Gets or sets the CategoryID value.
         /// </summary>
-        public int CategoryID
+        public long CategoryID
         {
             get { return categoryID; }
             set { categoryID = value; }
