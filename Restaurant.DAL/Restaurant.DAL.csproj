@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Razorpay" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Restaurant.BusinessEntities\Restaurant.BusinessEntities.csproj" />
     <ProjectReference Include="..\Restaurant.Utilty\Restaurant.Utilty.csproj" />
   </ItemGroup>

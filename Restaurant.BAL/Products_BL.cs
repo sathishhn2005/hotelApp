@@ -8,13 +8,16 @@ using Newtonsoft.Json;
 using System.Net;
 using System.IO;
 using System.Data;
+using System.Text;
+using System.Security.Cryptography;
+using Razorpay.Api;
 
 namespace Restaurant.BAL
 {
     public class Products_BL
     {
         FoodProducts_DAL objDAL = new FoodProducts_DAL();
-        public long GetMaster(long CompanyID, out List<FoodProducts> lstFProducts)
+        public long GetMaster(List<CustRegister> obj, out List<FoodProducts> lstFProducts)
         {
             long returnCode = -1;
 
@@ -22,7 +25,29 @@ namespace Restaurant.BAL
             {
                 try
                 {
-                    returnCode = objDAL.GetFoodProducts(CompanyID, out lstFProducts);
+                    returnCode = objDAL.GetFoodProducts(obj, out lstFProducts, obj[0].CompanyID);
+                    transactionScope.Complete();
+                    transactionScope.Dispose();
+
+                }
+                catch (Exception ex)
+                {
+                    transactionScope.Dispose();
+                    throw ex;
+                }
+
+                return returnCode;
+            }
+        }
+        public long GetMasterAdmin(long CompId, out List<FoodProducts> lstFProducts)
+        {
+            long returnCode = -1;
+
+            using (TransactionScope transactionScope = new TransactionScope())
+            {
+                try
+                {
+                    returnCode = objDAL.GetFoodProductAdmin(CompId, out lstFProducts);
                     transactionScope.Complete();
                     transactionScope.Dispose();
 
@@ -77,14 +102,14 @@ namespace Restaurant.BAL
             return returnCode;
         }
 
-        public long InsertCustOrder(out List<Cart> obj)
+        public List<Cart> InsertCustOrder(List<Cart> obj)
         {
-            long returnCode = -1;
+            List<Cart> lst = new List<Cart>();
 
             using TransactionScope transactionScope = new TransactionScope();
             try
             {
-                returnCode = objDAL.InsertCustOrder(out obj);
+                lst = objDAL.InsertCustOrder(obj);
                 transactionScope.Complete();
                 transactionScope.Dispose();
 
@@ -95,8 +120,84 @@ namespace Restaurant.BAL
                 throw ex;
             }
 
-            return returnCode;
+            return lst;
         }
+        private static string ReceiptGeneration()
+        {
+            int randval;
+            string n;
+            StringBuilder op = new StringBuilder();
+            RandomNumberGenerator obj = RandomNumberGenerator.Create();
+            byte[] val = new byte[4];
+            obj.GetBytes(val);
+            randval = BitConverter.ToInt32(val, 0);
+            if (randval < 0)
+            {
+                randval *= -1;
+            }
+            n = randval.ToString();
+            int i = n.Length - 1;
+            int c = 1;
+            while (c <= 6)
+            {
+                op.Append(n[i]);
+                c += 1;
+                i -= 1;
+            }
+            obj.Dispose();
+            return op.ToString();
+        }
+        public List<Billing> PlaceOrder(List<Billing> obj)
+        {
+            List<Billing> lst = new List<Billing>();
+            long TotalAmt = 0;
+            string OrderId = string.Empty;
+            string Receipt = string.Empty;
+            using TransactionScope transactionScope = new TransactionScope();
+            try
+            {
+                foreach (var item in obj)
+                {
+                    TotalAmt += item.TotalAmount;
+                }
+                if (obj[0].PaymentType.Equals("ONLINE"))
+                {
+                    Receipt = ReceiptGeneration();
+
+                    Dictionary<string, object> input = new Dictionary<string, object>
+                    {
+                        { "amount",TotalAmt},
+                        { "currency", "INR" },
+                        { "receipt",Receipt },
+                        { "payment_capture", 1 }
+                    };
+
+                    objDAL.GetRazorPayKeys(obj[0].CompanyID, out string key, out string secret);
+                    RazorpayClient client = new RazorpayClient(key, secret);
+
+                    Order order = client.Order.Create(input);
+
+                    OrderId = order["id"].ToString();
+                   
+                    lst = objDAL.SavePlaceOrder(obj,OrderId);
+                }
+                else
+                {
+                    lst = objDAL.SavePlaceOrder(obj,Receipt);
+                }
+                transactionScope.Complete();
+                transactionScope.Dispose();
+
+            }
+            catch (Exception ex)
+            {
+                transactionScope.Dispose();
+                throw ex;
+            }
+
+            return lst;
+        }
+
         public List<CustRegister> InsertCustomer(CustRegister obj)
         {
             List<CustRegister> lst = new List<CustRegister>();
@@ -261,7 +362,7 @@ namespace Restaurant.BAL
             try
             {
                 lst = objDAL.IsUserExists(obj);
-                lst[0].TotalDays = Convert.ToInt32((lst[0].EndDate - lst[0].StartDate).TotalDays);
+              //  lst[0].TotalDays = Convert.ToInt32((lst[0].EndDate - lst[0].StartDate).TotalDays);
                 transactionScope.Complete();
                 transactionScope.Dispose();
 
@@ -274,14 +375,14 @@ namespace Restaurant.BAL
 
             return lst;
         }
-        public long AdminRegister(Admin obj)
+        public List<Admin> AdminRegister(Admin obj)
         {
-            long returnCode = -1;
+            List<Admin> lst = new List<Admin>();
 
             using TransactionScope transactionScope = new TransactionScope();
             try
             {
-                returnCode = objDAL.RegisterAdmin(obj);
+                lst = objDAL.RegisterAdmin(obj);
                 transactionScope.Complete();
                 transactionScope.Dispose();
 
@@ -292,7 +393,7 @@ namespace Restaurant.BAL
                 throw ex;
             }
 
-            return returnCode;
+            return lst;
         }
         public long UpdateSubscription(Admin obj)
         {
@@ -314,14 +415,14 @@ namespace Restaurant.BAL
 
             return returnCode;
         }
-        public List<Admin> GetSASubscription(string strname)
+        public List<Admin> GetSASubscription(string strname, int flag)
         {
             List<Admin> lst = new List<Admin>();
 
             using TransactionScope transactionScope = new TransactionScope();
             try
             {
-                lst = objDAL.GetSubscriptionSA(strname);
+                lst = objDAL.GetSubscriptionSA(strname, flag);
                 transactionScope.Complete();
                 transactionScope.Dispose();
 
@@ -342,6 +443,27 @@ namespace Restaurant.BAL
             try
             {
                 returnCode = objDAL.IsSuperAdminExists(obj);
+                transactionScope.Complete();
+                transactionScope.Dispose();
+
+            }
+            catch (Exception ex)
+            {
+                transactionScope.Dispose();
+                throw ex;
+            }
+
+            return returnCode;
+        }
+        public long GetOrderedDetails(long CompnId, int flag, out List<Billing> lstOrderedDetails)
+        {
+            long returnCode = -1;
+
+            using TransactionScope transactionScope = new TransactionScope();
+            try
+            {
+                returnCode = objDAL.GetOrderDetails(CompnId, flag, out lstOrderedDetails);
+
                 transactionScope.Complete();
                 transactionScope.Dispose();
 

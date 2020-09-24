@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Reflection.Emit;
+using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Restaurant.BAL;
@@ -22,28 +25,7 @@ namespace RestaurantAPI.Controllers
 
 
         Products_BL objBAL = new Products_BL();
-        [HttpGet]
-        [Route("[action]")]
-        public ActionResult GetProducts(long OrgId)
-        {
-            long returnCode = -1;
-            List<FoodProducts> lstProducts;
-            try
-            {
-                returnCode = objBAL.GetMaster(OrgId, out lstProducts);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            if (returnCode > 0)
-                return Ok(lstProducts);
 
-            else
-                return NotFound();
-
-
-        }
         [HttpPost]
         [Route("[action]")]
         public IActionResult SuperAdminInsert([FromBody] LoginSignUp obj)
@@ -113,17 +95,17 @@ namespace RestaurantAPI.Controllers
         public IActionResult InsertCustCart([FromBody] List<Cart> obj)
         {
 
-            long returnCode = -1;
+            List<Cart> lst = new List<Cart>();
             try
             {
-                returnCode = objBAL.InsertCustOrder(out obj);
+                lst = objBAL.InsertCustOrder(obj);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            if (returnCode > 0)
-                return Ok(obj);
+            if (lst.Count > 0)
+                return Ok(lst);
 
             else
                 return NotFound();
@@ -171,13 +153,13 @@ namespace RestaurantAPI.Controllers
         }
         [HttpPost]
         [Route("[action]")]
-        public IActionResult Renew([FromBody]Renewal obj)
+        public IActionResult Renew([FromBody] Renewal obj)
         {
 
             long returnCode = -1;
             try
             {
-               returnCode = objBAL.RenewalSubscription(obj);
+                returnCode = objBAL.RenewalSubscription(obj);
             }
             catch (Exception ex)
             {
@@ -236,21 +218,21 @@ namespace RestaurantAPI.Controllers
         [Route("[action]")]
         public IActionResult AdminReg([FromBody] Admin obj)
         {
-
-            long returnCode = -1;
+            List<Admin> lst = new List<Admin>();
             try
             {
-                returnCode = objBAL.AdminRegister(obj);
+                lst = objBAL.AdminRegister(obj);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            if (returnCode > 0)
-                return Ok(returnCode);
+            if (lst.Count > 0)
+                return Ok(lst);
 
             else
                 return NotFound();
+            //return Ok(obj);
         }
         [HttpPost]
         [Route("[action]")]
@@ -276,24 +258,29 @@ namespace RestaurantAPI.Controllers
         [Route("[action]")]
         public IActionResult GetSubSA(string SAName)
         {
-
-
+            List<Admin> lstSubscriptionInfo = new List<Admin>();
             List<Admin> lst = new List<Admin>();
+            long returnCode = 1;
+            object[] arr = new object[2];
             try
             {
-                lst = objBAL.GetSASubscription(SAName);
+                lstSubscriptionInfo = objBAL.GetSASubscription(SAName, 1);
+                lst = objBAL.GetSASubscription(SAName, 2);
+                arr[0] = lstSubscriptionInfo;
+                arr[1] = lst;
+                returnCode = 1;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            if (lst.Count > 0)
-                return Ok(lst);
+            if (returnCode > 0)
+                return Ok(arr);
 
             else
                 return NotFound();
         }
-        
+
         [HttpPost]
         [Route("[action]")]
         public IActionResult OTPVerification([FromBody] CustRegister obj)
@@ -335,5 +322,91 @@ namespace RestaurantAPI.Controllers
             else
                 return BadRequest();
         }
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult GetAllProducts([FromBody] List<CustRegister> obj)
+        {
+            List<FoodProducts> lstProducts = new List<FoodProducts>();
+            long returnCode = -1;
+            object[] arr = new object[2];
+            try
+            {
+                returnCode = objBAL.GetMaster(obj, out lstProducts);
+                arr[0] = obj;
+                arr[1] = lstProducts;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (returnCode > 0)
+                return Ok(arr);
+
+            else
+                return NotFound();
+        }
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetAllProductsAdmin(long CompId)
+        {
+            List<FoodProducts> lstProducts = new List<FoodProducts>();
+            long returnCode = -1;
+            try
+            {
+                returnCode = objBAL.GetMasterAdmin(CompId, out lstProducts);
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (returnCode > 0)
+                return Ok(lstProducts);
+
+            else
+                return NotFound();
+        }
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult PlaceOrder([FromBody] List<Billing> objj)
+        {
+            List<Billing> lstPlaceOrder = new List<Billing>();
+
+            try
+            {
+                lstPlaceOrder = objBAL.PlaceOrder(objj);
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (lstPlaceOrder.Count > 0)
+                return Ok(lstPlaceOrder);
+
+            else
+                return NotFound();
+        }
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult GetOrderedDetails([FromBody] Billing obj)
+        {
+            try
+            {
+                objBAL.GetOrderedDetails(obj.CompanyID, obj.Flag, out List<Billing> lstOrderedDetails);
+
+                if (lstOrderedDetails.Count > 0)
+                    return Ok(lstOrderedDetails);
+
+                else
+                    return NotFound();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
     }
 }

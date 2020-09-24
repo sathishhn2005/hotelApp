@@ -39,10 +39,11 @@ C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\RestaurantAPI\
 C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\RestaurantAPI\bin\Debug\netcoreapp3.1\Restaurant.BusinessEntities.pdb
 C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\RestaurantAPI\bin\Debug\netcoreapp3.1\Restaurant.DAL.pdb
 C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\RestaurantAPI\bin\Debug\netcoreapp3.1\Restaurant.Utilty.pdb
-C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\RestaurantAPI\obj\Debug\netcoreapp3.1\RestaurantAPI.csproj.CoreCompileInputs.cache
-C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\RestaurantAPI\obj\Debug\netcoreapp3.1\RestaurantAPI.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\RestaurantAPI\obj\Debug\netcoreapp3.1\RestaurantAPI.csproj.CopyComplete
 C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\RestaurantAPI\obj\Debug\netcoreapp3.1\RestaurantAPI.dll
 C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\RestaurantAPI\obj\Debug\netcoreapp3.1\RestaurantAPI.pdb
 C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\RestaurantAPI\obj\Debug\netcoreapp3.1\RestaurantAPI.genruntimeconfig.cache
 C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\RestaurantAPI\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\RestaurantAPI\bin\Debug\netcoreapp3.1\Razorpay.dll
+C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\RestaurantAPI\obj\Debug\netcoreapp3.1\RestaurantAPI.csproj.CoreCompileInputs.cache
+C:\Users\Guru\Documents\Visual Studio 2019\Projects\RestaurantAPI\RestaurantAPI\obj\Debug\netcoreapp3.1\RestaurantAPI.MvcApplicationPartsAssemblyInfo.cache

@@ -1,8 +1,22 @@
 {
   "version": 2,
-  "dgSpecHash": "pTkJaxgTDZKfzQ2bzO1uWWCaITE+UAVxoAUvt0ab2jQ6DfPFddRtNUxcTL5Kr5OCY4SLVEPEtA9AddW+W5gFMw==",
+  "dgSpecHash": "xKe5VCadg72SH0zfSxrLxuwwi3STNEupOIxsIZRNNXfrZU9Z3b5OrZCkOKoAcaVvTluTG38pyuZlZznfQD6XxQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Guru\\Documents\\Visual Studio 2019\\Projects\\RestaurantAPI\\Restaurant.BusinessEntities\\Restaurant.BusinessEntities.csproj",
-  "expectedPackageFiles": [],
-  "logs": []
+  "expectedPackageFiles": [
+    "C:\\Users\\Guru\\.nuget\\packages\\newtonsoft.json\\11.0.2\\newtonsoft.json.11.0.2.nupkg.sha512",
+    "C:\\Users\\Guru\\.nuget\\packages\\razorpay\\3.0.0\\razorpay.3.0.0.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Razorpay 3.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "Razorpay",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    }
+  ]
 }

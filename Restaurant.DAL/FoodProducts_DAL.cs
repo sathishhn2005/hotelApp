@@ -6,41 +6,45 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-
 namespace Restaurant.DAL
 {
     public class FoodProducts_DAL
     {
         SQLHelper sqlHelper = new SQLHelper();
-        public long GetFoodProducts(long OrgId, out List<FoodProducts> lstProducts)
+        public long GetFoodProducts(List<CustRegister> obj, out List<FoodProducts> lstProducts, long CompanyID)
         {
             long returnCode = -1;
+            CompanyID = 1;
             lstProducts = new List<FoodProducts>();
+
 
             try
             {
                 DataSet ds = new DataSet();
                 List<MySqlParameter> parameters = new List<MySqlParameter>
                 {
-                    new MySqlParameter("OrgId", OrgId)
+                    new MySqlParameter("CompnID", CompanyID)
                 };
 
                 ds = sqlHelper.executeSP<DataSet>(parameters, "SP_GetFoodProducts");
                 if (ds.Tables[0].Rows.Count > 0)
                 {
-                    lstProducts = (from DataRow dr in ds.Tables[0].Rows
-                                   select new FoodProducts()
-                                   {
-                                       CompanyID = Convert.ToInt32(dr["CompanyID"]),
-                                       FoodID = Convert.ToInt64(dr["FoodID"]),
-                                       FoodName = dr["FoodName"].ToString(),
-                                       CategoryID = Convert.ToInt32(dr["CategoryID"]),
-                                       CategoryName = dr["CategoryName"].ToString(),
-                                       Price = Convert.ToInt64(dr["Price"]),
-                                       Description = dr["Description"].ToString(),
-                                       TaxPercent = Convert.ToDecimal(dr["Planning"])
+                    ////FPC.,FPC.,FPC.,,FoodName,IMS.ImageSource,FP.Price,FP.Description
+                    //lstProducts = (from DataRow dr in ds.Tables[0].Rows
+                    //               select new FoodProducts()
+                    //               {
+                    //                   CompanyID = Convert.ToInt32(dr["CompanyID"]),
+                    //                   FoodID = Convert.ToInt64(dr["FoodProductId"]),
+                    //                   CategoryID = Convert.ToInt64(dr["FoodCategoryId"]),
+                    //                   CategoryName = (dr["CategoryName"]).ToString(),
+                    //                   FoodName = dr["FoodName"].ToString(),
+                    //                   ImageSource = Convert.ToByte(dr["ImageSource"]),
+                    //                   Price = (long)dr["Price"],
+                    //                   Description = (dr["Description"]).ToString()
 
-                                   }).ToList();
+                    //               }).ToList();
+
+                    DTtoListConverter.ConvertTo(ds.Tables[0], out lstProducts);
                     returnCode = 1;
                 }
                 return returnCode;
@@ -129,7 +133,7 @@ namespace Restaurant.DAL
                                                CategoryName = dr["CategoryName"].ToString(),
 
                                                FoodName = dr["FoodName"].ToString(),
-                                               ImageSource = (byte)dr["ImageSource"],
+                                               //  ImageSource = (byte)dr["ImageSource"],
                                                Price = (long)dr["Price"],
                                                Description = dr["Description"].ToString(),
 
@@ -183,42 +187,53 @@ namespace Restaurant.DAL
             }
             return lst;
         }
-        public long InsertCustOrder(out List<Cart> lstCustOrders)
+        public List<Cart> InsertCustOrder(List<Cart> lstCustOrders)
         {
-            long returnCode = -1;
-
+            List<Cart> lst = new List<Cart>();
 
             try
             {
                 DataSet ds = new DataSet();
-                List<MySqlParameter> parameters = new List<MySqlParameter>
+                foreach (var item in lstCustOrders)
                 {
-                    //convert to datatable
-                };
+                    List<MySqlParameter> parameters = new List<MySqlParameter>
+                    {
+                        new MySqlParameter("FoodProdid",item.FoodProductId),
+                    new MySqlParameter("CompID",item.CompanyID),
+                    new MySqlParameter("CustID",item.CustomerID),
+                    new MySqlParameter("TotalAmt", item.TotalAmount),
+                    new MySqlParameter("Discnt", item.Discount),
+                    new MySqlParameter("U_Price", item.UnitPrice),
+                    new MySqlParameter("Qty",item.Quantity),
+                    new MySqlParameter("TaxPer",item.Tax),
+                    new MySqlParameter("TableId",item.TableNo),
+                    };
 
-                ds = sqlHelper.executeSP<DataSet>(parameters, "SP_InsertCustCart");
-                if (ds.Tables[0].Rows.Count > 0)
-                {
-                    lstCustOrders = new List<Cart>();
-                    lstCustOrders = (from DataRow dr in ds.Tables[0].Rows
-                                     select new Cart()
-                                     {
-                                         CompanyID = Convert.ToInt32(dr["CompanyID"]),
-                                         CustomerID = Convert.ToInt64(dr["CustomerID"]),
-                                         FoodID = Convert.ToInt64(dr["FoodID"]),
-                                         TotalAmount = Convert.ToInt64(dr["TotalAmount"]),
-                                         Discount = Convert.ToInt32(dr["Discount"]),
-                                         UnitPrice = Convert.ToInt32(dr["UnitPrice"]),
-                                         Quantity = Convert.ToInt32(dr["Quantity"]),
-                                         Tax = Convert.ToInt32(dr["Tax"]),
-                                         TableNo = Convert.ToInt32(dr["TableNo"]),
+                    ds = sqlHelper.executeSP<DataSet>(parameters, "SP_InsertCustCart");
 
-                                     }).ToList();
-                    returnCode = 1;
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        lst = (from DataRow dr in ds.Tables[0].Rows
+                               select new Cart()
+                               {
+                                   OrderDetailsId = Convert.ToInt64(dr["OrderDetailsId"]),
+                                   CompanyID = Convert.ToInt32(dr["CompanyID"]),
+                                   CustomerID = Convert.ToInt64(dr["CustomerID"]),
+                                   FoodProductId = Convert.ToInt64(dr["FoodProductId"]),
+                                   TotalAmount = Convert.ToInt64(dr["TotalAmount"]),
+                                   Discount = Convert.ToInt32(dr["Discount"]),
+                                   UnitPrice = Convert.ToInt32(dr["UnitPrice"]),
+                                   Quantity = Convert.ToInt32(dr["Quantity"]),
+                                   Tax = Convert.ToInt32(dr["Tax"]),
+                                   TableNo = Convert.ToInt32(dr["TableNo"]),
+
+                               }).ToList();
+
+                    }
+                    else
+                        return lst;
                 }
-                else
-                    lstCustOrders = new List<Cart>();
-                return returnCode;
+                return lst;
             }
             catch (Exception ex)
             {
@@ -326,28 +341,29 @@ namespace Restaurant.DAL
 
                 };
 
-                var output = sqlHelper.executeSP<DataSet>(parameters, "SP_IsUserExits");
-                if (output.Tables[0].Rows.Count > 0)
+                DataSet ds = sqlHelper.executeSP<DataSet>(parameters, "SP_IsUserExits");
+                if (ds.Tables[0].Rows.Count > 0)
                 {
-                    lst = (from DataRow dr in output.Tables[0].Rows
-                           select new Admin()
-                           {
-                               CompanyID = (long)dr["CompanyId"],
-                               UserName = Convert.ToString(dr["UserName"]),
-                               AdminSubscriptionId = (long)(dr["AdminSubscriptionId"]),
-                               StartDate = Convert.ToDateTime(dr["StartDate"]),
+                    //lst = (from DataRow dr in output.Tables[0].Rows
+                    //       select new Admin()
+                    //       {
+                    //           CompanyID = (long)dr["CompanyId"],
+                    //           UserName = Convert.ToString(dr["UserName"]),
+                    //           AdminSubscriptionId = (long)(dr["AdminSubscriptionId"]),
+                    //           StartDate = Convert.ToDateTime(dr["StartDate"]),
 
-                               EndDate = Convert.ToDateTime(dr["EndDate"]),
-                               TotalDays = Convert.ToInt32(dr["TotalDays"]),
-                               Price = (long)(dr["Price"]),
-                               TotalAmount = (long)(dr["TotalAmount"]),
+                    //           EndDate = Convert.ToDateTime(dr["EndDate"]),
+                    //           TotalDays = Convert.ToInt32(dr["TotalDays"]),
+                    //           Price = (long)(dr["Price"]),
+                    //           TotalAmount = (long)(dr["TotalAmount"]),
 
-                               Tax = (int)(dr["Tax"]),
-                               PaymentType = Convert.ToString(dr["PaymentType"]),
-                               PaymentStatus = Convert.ToString(dr["PaymentStatus"]),
-                               Comments = Convert.ToString(dr["Comments"]),
+                    //           Tax = (int)(dr["Tax"]),
+                    //           PaymentType = Convert.ToString(dr["PaymentType"]),
+                    //           PaymentStatus = Convert.ToString(dr["PaymentStatus"]),
+                    //           Comments = Convert.ToString(dr["Comments"]),
 
-                           }).ToList();
+                    //       }).ToList();
+                    DTtoListConverter.ConvertTo(ds.Tables[0], out lst);
                 }
 
             }
@@ -358,35 +374,80 @@ namespace Restaurant.DAL
             return lst;
         }
 
-        public long RegisterAdmin(Admin obj)
+        public List<Admin> RegisterAdmin(Admin item)
         {
-            long returnCode = -1;
-
+            List<Admin> lst = new List<Admin>();
+            DataSet ds = new DataSet();
+            //        Address: "Chennai"
+            //Amount: "1000"
+            //Comments: "Comments test"
+            //CompanyName: "Thalapakati"
+            //CostPerDay: "500"
+            //CustomerName: "Murali Prasath"
+            //DrCr: "debit"
+            //EndDate: "9/30/2020"
+            //Password: "password"
+            //Pause: false
+            //Payments: "cash"
+            //PhoneNumber: "9840359280"
+            //StartDate: "9/7/2020"
+            //Status: "completed"
+            //UserName: "sat"
             try
             {
-
+                int Tdays = 30;// Convert.ToInt32(item.EndDate - item.StartDate);
+                string Status = string.Empty;
+                if (item.Pause.Equals("false"))
+                    Status = "InActive";
+                else
+                    Status = "Active";
                 List<MySqlParameter> parameters = new List<MySqlParameter>
                 {
-                    new MySqlParameter("CompanyName",obj.CompanyName),
-                    new MySqlParameter("UserName",obj.UserName),
-                    new MySqlParameter("Password", obj.Password),
-                    new MySqlParameter("PhoneNumber", obj.PhoneNumber),
-                    new MySqlParameter("Address", obj.Address),
-                    new MySqlParameter("AccRegisteredDate", obj.AccRegisteredDate),
-                    new MySqlParameter("Cost", obj.Cost),
-                    new MySqlParameter("Status", obj.Status)
+                    
+                //                    Insert into TB_Admin(CompanyName,AdminName,PhoneNumber,Address,UserName,Password,AccRegisteredDate,Cost,Status)
+                //                                  select CompName,CName,PhNo,Addre,Uname,Pswd,AccRegDate,Amt,CompStatus
+
+                //insert into tb_adminsubscriptionpaymentdetails(CompanyID,StartDate,EndDate,TotalDays,Price,TotalAmount,PaymentType,PaymentStatus,Comments)
+                //select CompID,Sdate,Edate,TotDays,CPDay,Amt,Ptype,PStatus,Comments
+
+                    new MySqlParameter("Addre", item.Address),
+                    new MySqlParameter("Commnt", item.Comments),
+                    new MySqlParameter("CompName", item.CompanyName),
+                    new MySqlParameter("CPDay", item.CostPerDay),
+                    new MySqlParameter("CName", item.CustomerName),
+
+                    new MySqlParameter("CompStatus", Status),
+                    new MySqlParameter("PhNo", item.PhoneNumber),
+                    new MySqlParameter("Pswd", item.Password),
+                    new MySqlParameter("Uname", item.UserName),
+                    new MySqlParameter("AccRegDate", DateTime.Now),
+
+                    new MySqlParameter("Amt", item.TotalAmount),
+                    new MySqlParameter("TotDays", Tdays),
+                    new MySqlParameter("PStatus", item.DrCr),
+                    new MySqlParameter("Edate", item.EndDate),
+                    new MySqlParameter("Sdate", item.StartDate),
+
+                    new MySqlParameter("Pausee", item.Pause),
+                    new MySqlParameter("PType", item.Payments),
+
 
                 };
 
-                var output = sqlHelper.executeSP<int>(parameters, "SP_InsertAdmin");
-                returnCode = Convert.ToInt64(output);
-                return returnCode;
+                ds = sqlHelper.executeSP<DataSet>(parameters, "SP_InsertAdmin");
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    DTtoListConverter.ConvertTo(ds.Tables[0], out lst);
+
+                }
+
+
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            // return returnCode;
+            return lst;
         }
         public long UpdateSubAdmin(Admin obj)
         {
@@ -414,40 +475,25 @@ namespace Restaurant.DAL
             }
             // return returnCode;
         }
-        public List<Admin> GetSubscriptionSA(string SAUserName)
+        public List<Admin> GetSubscriptionSA(string SAUserName, int flag)
         {
             if (SAUserName == null)
                 SAUserName = "";
             List<Admin> lst = new List<Admin>();
-
+            DataSet ds = new DataSet();
             try
             {
                 List<MySqlParameter> parameters = new List<MySqlParameter>
                 {
                     new MySqlParameter("SAUserName",SAUserName),
+                    new MySqlParameter("Flag",flag),
 
                 };
 
-                var output = sqlHelper.executeSP<DataSet>(parameters, "SP_GetSubscriptionSA");
-                if (output.Tables[0].Rows.Count > 0)
+                ds = sqlHelper.executeSP<DataSet>(parameters, "SP_GetSubscriptionSA");
+                if (ds.Tables[0].Rows.Count > 0)
                 {
-                    lst = (from DataRow dr in output.Tables[0].Rows
-                           select new Admin()
-                           {
-
-                               AdminSubscriptionId = (int)dr["AdminSubscriptionId"],
-                               StartDate = Convert.ToDateTime(dr["StartDate"]),
-                               EndDate = Convert.ToDateTime(dr["EndDate"]),
-                               CompanyID = (long)dr["CompanyID"],
-                               TotalDays = (int)dr["TotalDays"],
-                               Price = (long)dr["Price"],
-
-                               TotalAmount = (long)dr["TotalAmount"],
-                               Tax = (int)dr["Tax"],
-                               PaymentStatus = dr["PaymentStatus"].ToString(),
-                               PaymentType = dr["PaymentType"].ToString(),
-                               Comments = dr["Comments"].ToString(),
-                           }).ToList();
+                    DTtoListConverter.ConvertTo(ds.Tables[0], out lst);
                 }
             }
             catch (Exception ex)
@@ -477,6 +523,145 @@ namespace Restaurant.DAL
                 }
                 else
                     returnCode = 0;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return returnCode;
+        }
+        public List<Billing> SavePlaceOrder(List<Billing> lstCustOrders, string OrderId)
+        {
+            List<Billing> lst = new List<Billing>();
+
+            try
+            {
+                DataSet ds = new DataSet();
+                foreach (var item in lstCustOrders)
+                {
+
+                    List<MySqlParameter> parameters = new List<MySqlParameter>
+                    {
+                        new MySqlParameter("FoodProdid",item.FoodProductId),
+                    new MySqlParameter("CompID",item.CompanyID),
+                    new MySqlParameter("CustID",item.CustomerId),
+                    new MySqlParameter("CustName",item.CustomerName),
+                    new MySqlParameter("PhoneNo",item.PhoneNumber),
+
+                    new MySqlParameter("TotalAmt", item.TotalAmount),
+                    new MySqlParameter("Qty", item.Quantity),
+                    new MySqlParameter("TaxPer",item.Tax),
+                    new MySqlParameter("TableId",item.TableNo),
+                    new MySqlParameter("PaymentType",item.PaymentType),
+                    new MySqlParameter("OrderId",OrderId),
+
+                    };
+
+                    ds = sqlHelper.executeSP<DataSet>(parameters, "SP_InsertPlaceOrder");
+
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        DTtoListConverter.ConvertTo(ds.Tables[0], out lst);
+
+                    }
+                    else
+                        return lst;
+                }
+                return lst;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            // return returnCode;
+        }
+
+        public long GetOrderDetails(long CompId, int flag, out List<Billing> lstOrderedDetails)
+        {
+
+            long returnCode = -1;
+            lstOrderedDetails = new List<Billing>();
+            try
+            {
+                DataSet ds = new DataSet();
+                List<MySqlParameter> parameters = new List<MySqlParameter>
+                    {
+
+                    new MySqlParameter("CompnID",CompId),
+                    };
+                if (flag.Equals(1))
+                    ds = sqlHelper.executeSP<DataSet>(parameters, "SP_GetOrderDetails");
+                else if (flag.Equals(2))
+                    ds = sqlHelper.executeSP<DataSet>(parameters, "SP_GetBillingDetails");
+
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    DTtoListConverter.ConvertTo(ds.Tables[0], out lstOrderedDetails);
+                    return returnCode = 1;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return returnCode;
+        }
+        public long GetFoodProductAdmin(long CompId, out List<FoodProducts> lstProducts)
+        {
+            long returnCode = -1;
+
+            lstProducts = new List<FoodProducts>();
+            try
+            {
+                DataSet ds = new DataSet();
+                List<MySqlParameter> parameters = new List<MySqlParameter>
+                {
+                    new MySqlParameter("CompnID", CompId)
+                };
+
+                ds = sqlHelper.executeSP<DataSet>(parameters, "SP_GetFoodProducts");
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+
+
+                    DTtoListConverter.ConvertTo(ds.Tables[0], out lstProducts);
+                    returnCode = 1;
+                }
+                return returnCode;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            // return returnCode;
+        }
+        public long GetRazorPayKeys(long CompId, out string key, out string secret)
+        {
+
+            long returnCode = 0;
+            key = string.Empty;
+            secret = string.Empty;
+            List<Billing> lst = new List<Billing>();
+            try
+            {
+                DataSet ds = new DataSet();
+                List<MySqlParameter> parameters = new List<MySqlParameter>
+                    {
+
+                    new MySqlParameter("CompnID",CompId),
+                    };
+
+                ds = sqlHelper.executeSP<DataSet>(parameters, "SP_GetRazorPayKey");
+
+
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    key = ds.Tables[0].Rows[0]["keyId"].ToString();
+                    secret = ds.Tables[0].Rows[0]["keySecret"].ToString();
+                    //DTtoListConverter.ConvertTo(ds.Tables[0], out lstProducts);
+                }
 
             }
             catch (Exception ex)

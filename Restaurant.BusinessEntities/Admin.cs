@@ -18,6 +18,10 @@ namespace Restaurant.BusinessEntities
         private string password = string.Empty;
         private string companyName = string.Empty;
         private string adminName = string.Empty;
+        private string customerName = string.Empty;
+        private string drCr = string.Empty;
+        private string payments = string.Empty;
+        private long costPerDay = 0;
         private string status = string.Empty;
         private DateTime accRegisteredDate = DateTime.MaxValue;
         private DateTime startDate = DateTime.MaxValue;
@@ -27,6 +31,8 @@ namespace Restaurant.BusinessEntities
         private long totalAmount = 0;
         private int tax = 0;
         private string paymentType = string.Empty;
+        private bool pause;
+        
         private string paymentStatus = string.Empty;
         private string comments = string.Empty;
 
@@ -51,6 +57,11 @@ namespace Restaurant.BusinessEntities
         public string PaymentType { get { return paymentType; } set { paymentType = value; } }
         public string PaymentStatus { get { return paymentStatus; } set { paymentStatus = value; } }
         public string Comments { get { return comments; } set { comments = value; } }
-
+        public string CustomerName { get { return customerName; } set { customerName = value; } }
+        public string DrCr { get { return drCr; } set { drCr = value; } }
+        public string Payments { get { return payments; } set { payments = value; } }
+        public long CostPerDay { get { return costPerDay; } set { costPerDay = value; } }
+       
+        public bool Pause { get => pause; set => pause = value; }
     }
 }

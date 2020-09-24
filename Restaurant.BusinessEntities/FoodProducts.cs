@@ -7,6 +7,8 @@ namespace Restaurant.BusinessEntities
         #region Fields
 
         private long foodID = 0;
+        private long foodProductId = 0;
+        private long foodCategoryId = 0;
         private long price = 0;
         private string foodName = String.Empty;
         private long categoryID = 0;
@@ -19,11 +21,11 @@ namespace Restaurant.BusinessEntities
         private DateTime modifiedAt = DateTime.MaxValue;
         private decimal taxPercent = Decimal.Zero;
         private string isDiscountable = String.Empty;
-        private byte imageSource;
-
+        private byte[] imageSource;
+        
         #endregion
 
-        public byte ImageSource
+        public byte[] ImageSource
         {
             get { return imageSource; }
             set { imageSource = value; }
@@ -36,6 +38,17 @@ namespace Restaurant.BusinessEntities
         {
             get { return foodID; }
             set { foodID = value; }
+        }
+        
+        public long FoodProductId
+        {
+            get { return foodProductId; }
+            set { foodProductId = value; }
+        }
+        public long FoodCategoryId
+        {
+            get { return foodCategoryId; }
+            set { foodCategoryId = value; }
         }
         public long Price
         {

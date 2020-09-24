@@ -6,10 +6,12 @@ namespace Restaurant.BusinessEntities
 {
     public class Cart
     {
+        private long orderDetailsId = 0;
         private long billingID = 0;
         private long companyID = 0;
         private long customerID = 0;
         private long foodID = 0;
+        private long foodProductId = 0;
         private long totalAmount = 0;
         private int discount = 0;
         private int unitPrice = 0;
@@ -18,6 +20,12 @@ namespace Restaurant.BusinessEntities
         private int tableNo = 0;
 
         public long BillingID { get { return billingID; } set { billingID = value; } }
+        public long OrderDetailsId { get { return orderDetailsId; } set { orderDetailsId = value; } }
+        public long FoodProductId
+        {
+            get { return foodProductId; }
+            set { foodProductId = value; }
+        }
         public long CompanyID { get { return companyID; } set { companyID = value; } }
         public long CustomerID { get { return customerID; } set { customerID = value; } }
         public long FoodID { get { return foodID; } set { foodID = value; } }
