@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using Newtonsoft.Json.Converters;
 using Restaurant.BusinessEntities;
 using Restaurant.Utilty;
 using System;
@@ -106,11 +107,20 @@ namespace Restaurant.DAL
         public List<FoodProducts> InsertFoodProducts(List<FoodProducts> lstFP)
         {
             List<FoodProducts> lstFoodProducts = new List<FoodProducts>();
-            try
-            {
-                foreach (var item in lstFP)
+
+            long CompId = lstFP[0].CompanyID;
+            if (CompId > 0) {
+                List<MySqlParameter> param = new List<MySqlParameter>
                 {
-                    List<MySqlParameter> parameters = new List<MySqlParameter>
+                    new MySqlParameter("CompID",CompId),
+
+                };
+                var deletePut = sqlHelper.executeSP<DataSet>(param, "SP_DeleteFoodProducts");
+                try
+                {
+                    foreach (var item in lstFP)
+                    {
+                        List<MySqlParameter> parameters = new List<MySqlParameter>
                 {
                     new MySqlParameter("CompID",item.CompanyID),
                     new MySqlParameter("PriceAmt",item.Price),
@@ -118,33 +128,23 @@ namespace Restaurant.DAL
                     new MySqlParameter("CatgryName", item.CategoryName),
                     new MySqlParameter("Descr", item.Description),
                     new MySqlParameter("ImageSou", item.ImageSource),
+                    new MySqlParameter("ImgSourceType", item.Type),
+                    
                 };
 
-                    var output = sqlHelper.executeSP<DataSet>(parameters, "SP_InsertFoodProducts");
-                    if (output.Tables[0].Rows.Count > 0)
-                    {
-                        lstFoodProducts = (from DataRow dr in output.Tables[0].Rows
-                                           select new FoodProducts()
-                                           {
-
-                                               CompanyID = (long)dr["CompanyID"],
-                                               FoodID = (long)dr["FoodProductId"],
-                                               CategoryID = (long)dr["FoodCategoryId"],
-                                               CategoryName = dr["CategoryName"].ToString(),
-
-                                               FoodName = dr["FoodName"].ToString(),
-                                               //  ImageSource = (byte)dr["ImageSource"],
-                                               Price = (long)dr["Price"],
-                                               Description = dr["Description"].ToString(),
-
-                                           }).ToList();
+                        DataSet output = sqlHelper.executeSP<DataSet>(parameters, "SP_InsertFoodProducts");
+                        if (output.Tables[0].Rows.Count > 0)
+                        {
+                            DTtoListConverter.ConvertTo(output.Tables[0], out lstFoodProducts);
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+           
             return lstFoodProducts;
         }
         public List<CustRegister> InsertCust(CustRegister objInsertCust)
@@ -155,7 +155,7 @@ namespace Restaurant.DAL
             {
                 List<MySqlParameter> parameters = new List<MySqlParameter>
                 {
-                    new MySqlParameter("CompanyID",objInsertCust.CompanyID),
+                    new MySqlParameter("CompID",objInsertCust.CompanyID),
                     new MySqlParameter("OTP",objInsertCust.OTP),
                     new MySqlParameter("SerialNo",objInsertCust.SerialNo),
                     new MySqlParameter("Name", objInsertCust.Name),
@@ -164,20 +164,22 @@ namespace Restaurant.DAL
                     new MySqlParameter("DOB", objInsertCust.DOB),
                 };
 
-                var output = sqlHelper.executeSP<DataSet>(parameters, "SP_InsertCustomer");
+                DataSet output = sqlHelper.executeSP<DataSet>(parameters, "SP_InsertCustomer");
                 if (output.Tables[0].Rows.Count > 0)
                 {
-                    lst = (from DataRow dr in output.Tables[0].Rows
-                           select new CustRegister()
-                           {
+                    //lst = (from DataRow dr in output.Tables[0].Rows
+                    //       select new CustRegister()
+                    //       {
 
-                               CompanyID = (long)dr["CompanyId"],
-                               CustomerId = (long)dr["CustomerId"],
-                               OTP = (long)dr["OTP"],
-                               PhoneNumber = dr["PhoneNumber"].ToString(),
-                               SerialNo = dr["SerialNo"].ToString(),
-                               Name = dr["Name"].ToString(),
-                           }).ToList();
+                    //           CompanyID = (long)dr["CompanyId"],
+                    //           CustomerId = (long)dr["CustomerId"],
+                    //           OTP = (long)dr["OTP"],
+                    //           PhoneNumber = dr["PhoneNumber"].ToString(),
+                    //           SerialNo = dr["SerialNo"].ToString(),
+                    //           Name = dr["Name"].ToString(),
+                    //           Tax = (int)dr["Tax"],
+                    //       }).ToList();
+                    DTtoListConverter.ConvertTo(output.Tables[0], out lst);
                 }
 
             }
@@ -313,7 +315,7 @@ namespace Restaurant.DAL
                                CompanyID = (long)dr["CompanyID"],
                                CustomerId = (long)dr["CustomerId"],
                                CompanyName = dr["CompanyName"].ToString(),
-                               PhoneNumber = dr["PhoneNumber"].ToString(),
+                               PhoneNumber = (long)dr["PhoneNumber"],
                                OrderDetails = dr["OrderDetails"].ToString(),
                                TotalAmount = (long)dr["TotalAmount"],
                                Tax = (int)dr["Tax"],
@@ -555,6 +557,7 @@ namespace Restaurant.DAL
                     new MySqlParameter("TableId",item.TableNo),
                     new MySqlParameter("PaymentType",item.PaymentType),
                     new MySqlParameter("OrderId",OrderId),
+                    new MySqlParameter("Cmnt",item.Comments??"No comments entered"),
 
                     };
 
@@ -669,6 +672,92 @@ namespace Restaurant.DAL
                 throw ex;
             }
             return returnCode;
+        }
+        public long PauseSub(Admin obj)
+        {
+            long returnCode = -1;
+
+            try
+            {
+                List<MySqlParameter> parameters = new List<MySqlParameter>
+                {
+                    new MySqlParameter("SAName",obj.CompanyID),
+                    new MySqlParameter("SAName",obj.Status),
+                };
+
+                var output = sqlHelper.executeSP<int>(parameters, "SP_PauseSubscription");
+                returnCode = Convert.ToInt64(output);
+                return returnCode;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            // return returnCode;
+        }
+        public List<FoodProducts> UploadBanner(List<FoodProducts> lstFP)
+        {
+            List<FoodProducts> lstFoodProducts = new List<FoodProducts>();
+
+            long CompId = lstFP[0].CompanyID;
+            List<MySqlParameter> paramss = new List<MySqlParameter>
+                {
+                    new MySqlParameter("CompID",CompId),
+
+                };
+            var deletePut = sqlHelper.executeSP<DataSet>(paramss, "SP_DeleteBanners");
+            if (CompId > 0)
+            {
+                
+                try
+                {
+                    foreach (var item in lstFP)
+                    {
+                        List<MySqlParameter> parameters = new List<MySqlParameter>
+                {
+                    new MySqlParameter("CompID",item.CompanyID),
+                    new MySqlParameter("ImageSou", item.ImageSource),
+                };
+
+                        DataSet output = sqlHelper.executeSP<DataSet>(parameters, "SP_UploadBanner");
+                        if (output.Tables[0].Rows.Count > 0)
+                        {
+                            DTtoListConverter.ConvertTo(output.Tables[0], out lstFoodProducts);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            return lstFoodProducts;
+        }
+        public List<FoodProducts> GetBanners(long CompanyId)
+        {
+            List<FoodProducts> lst = new List<FoodProducts>();
+
+            try
+            {
+                List<MySqlParameter> parameters = new List<MySqlParameter>
+                {
+                    new MySqlParameter("CompID",CompanyId),
+
+                };
+
+                DataSet output = sqlHelper.executeSP<DataSet>(parameters, "SP_GetBanner");
+                if (output.Tables[0].Rows.Count > 0)
+                {
+                    DTtoListConverter.ConvertTo(output.Tables[0],out lst);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return lst;
         }
     }
 }

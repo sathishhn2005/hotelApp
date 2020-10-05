@@ -22,10 +22,13 @@ namespace Restaurant.BusinessEntities
         private long companyID = 0;
         private long customerId = 0;
         private long totalAmount = 0;
+        private long totalOrders = 0;
+        private long totalQtySales = 0;
+        private long totalRevenue = 0;
         private int discount = 0;
-        private int unitPrice = 0;
+        private long unitPrice = 0;
         private int quantity = 0;
-        private string phoneNumber = string.Empty;
+        private long phoneNumber = 0;
         private int tax = 0;
         private int flag = 0;
         private int tableNo = 0;
@@ -57,9 +60,9 @@ namespace Restaurant.BusinessEntities
         public long CustomerId { get { return customerId; } set { customerId = value; } }
         public long TotalAmount { get { return totalAmount; } set { totalAmount = value; } }
         public int Discount { get { return discount; } set { discount = value; } }
-        public int UnitPrice { get { return unitPrice; } set { unitPrice = value; } }
+        public long UnitPrice { get { return unitPrice; } set { unitPrice = value; } }
         public int Quantity { get { return quantity; } set { quantity = value; } }
-        public string PhoneNumber { get { return phoneNumber; } set { phoneNumber = value; } }
+        public long PhoneNumber { get { return phoneNumber; } set { phoneNumber = value; } }
         public string FoodName { get { return foodName; } set { foodName = value; } }
 
         public int Tax { get { return tax; } set { tax = value; } }
@@ -75,8 +78,10 @@ namespace Restaurant.BusinessEntities
         public string RazorOrderDetailsId { get { return razorOrderDetailsId; } set { razorOrderDetailsId = value; } }
         public string PaymentStatus { get { return paymentStatus; } set { paymentStatus = value; } }
         public string PaymentType { get { return paymentType; } set { paymentType = value; } }
-
         public long FoodProductId { get { return foodProductId; } set { foodProductId = value; } }
+        public long TotalOrders { get { return totalOrders; } set { totalOrders = value; } }
+        public long TotalQtySales { get { return totalQtySales; } set { totalQtySales = value; } }
+        public long TotalRevenue { get { return totalRevenue; } set { totalRevenue = value; } }
         public long PlaceOrderId { get { return placeOrderId; } set { placeOrderId = value; } }
         public string CreatedBy { get { return createdBy; } set { createdBy = value; } }
         public string Description { get { return description; } set { description = value; } }

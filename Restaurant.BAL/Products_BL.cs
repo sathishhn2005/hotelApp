@@ -178,12 +178,12 @@ namespace Restaurant.BAL
                     Order order = client.Order.Create(input);
 
                     OrderId = order["id"].ToString();
-                   
-                    lst = objDAL.SavePlaceOrder(obj,OrderId);
+
+                    lst = objDAL.SavePlaceOrder(obj, OrderId);
                 }
                 else
                 {
-                    lst = objDAL.SavePlaceOrder(obj,Receipt);
+                    lst = objDAL.SavePlaceOrder(obj, Receipt);
                 }
                 transactionScope.Complete();
                 transactionScope.Dispose();
@@ -294,6 +294,28 @@ namespace Restaurant.BAL
 
             return lstFoodProducts;
         }
+        public List<FoodProducts> BannerUpload(List<FoodProducts> lstFP)
+        {
+            List<FoodProducts> lstFoodProducts = new List<FoodProducts>();
+
+            using TransactionScope transactionScope = new TransactionScope();
+            try
+            {
+                lstFoodProducts = objDAL.UploadBanner(lstFP);
+                //var model = JsonConvert.DeserializeObject(obj);
+
+                transactionScope.Complete();
+                transactionScope.Dispose();
+
+            }
+            catch (Exception ex)
+            {
+                transactionScope.Dispose();
+                throw ex;
+            }
+
+            return lstFoodProducts;
+        }
         public long TaxUpdate(Cart obj)
         {
             long returnCode = -1;
@@ -362,7 +384,7 @@ namespace Restaurant.BAL
             try
             {
                 lst = objDAL.IsUserExists(obj);
-              //  lst[0].TotalDays = Convert.ToInt32((lst[0].EndDate - lst[0].StartDate).TotalDays);
+                //  lst[0].TotalDays = Convert.ToInt32((lst[0].EndDate - lst[0].StartDate).TotalDays);
                 transactionScope.Complete();
                 transactionScope.Dispose();
 
@@ -463,7 +485,16 @@ namespace Restaurant.BAL
             try
             {
                 returnCode = objDAL.GetOrderDetails(CompnId, flag, out lstOrderedDetails);
-
+                
+                if (lstOrderedDetails.Count > 0)
+                {
+                    foreach (var item in lstOrderedDetails)
+                    {
+                        item.TotalOrders = lstOrderedDetails.Count;
+                        item.TotalQtySales += item.Quantity;
+                        item.TotalRevenue += item.UnitPrice;
+                    }
+                }
                 transactionScope.Complete();
                 transactionScope.Dispose();
 
@@ -475,6 +506,46 @@ namespace Restaurant.BAL
             }
 
             return returnCode;
+        }
+        public long SubPause(Admin obj)
+        {
+            long returnCode = -1;
+
+            using TransactionScope transactionScope = new TransactionScope();
+            try
+            {
+                returnCode = objDAL.PauseSub(obj);
+                transactionScope.Complete();
+                transactionScope.Dispose();
+
+            }
+            catch (Exception ex)
+            {
+                transactionScope.Dispose();
+                throw ex;
+            }
+
+            return returnCode;
+        }
+        public List<FoodProducts> GetBanners(long CompanyId)
+        {
+            List<FoodProducts> lst = new List<FoodProducts>();
+
+            using TransactionScope transactionScope = new TransactionScope();
+            try
+            {
+                lst = objDAL.GetBanners(CompanyId);
+                transactionScope.Complete();
+                transactionScope.Dispose();
+
+            }
+            catch (Exception ex)
+            {
+                transactionScope.Dispose();
+                throw ex;
+            }
+
+            return lst;
         }
     }
 }

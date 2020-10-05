@@ -9,6 +9,7 @@ namespace Restaurant.BusinessEntities
 
         private string name = String.Empty;
         private long companyID = 0;
+        private long tax = 0;
         private long customerId = 0;
         private string details = string.Empty;
         
@@ -84,9 +85,13 @@ namespace Restaurant.BusinessEntities
             get { return details; }
             set { details = value; }
         }
-      
-        
 
+        public long Tax
+        {
+            get { return tax; }
+            set { tax = value; }
+        }
 
+       
     }
 }

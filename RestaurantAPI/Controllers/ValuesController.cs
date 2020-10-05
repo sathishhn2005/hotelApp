@@ -374,7 +374,7 @@ namespace RestaurantAPI.Controllers
 
             try
             {
-                lstPlaceOrder = objBAL.PlaceOrder(objj);
+               lstPlaceOrder = objBAL.PlaceOrder(objj);
 
             }
             catch (Exception ex)
@@ -407,6 +407,66 @@ namespace RestaurantAPI.Controllers
             }
 
         }
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult SubscriptionPause([FromBody] Admin obj)
+        {
 
+            long returnCode = -1;
+            try
+            {
+                returnCode = objBAL.SubPause(obj);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (returnCode >= 0)
+                return Ok(returnCode);
+
+            else
+                return BadRequest();
+        }
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult UploadBanner([FromBody] List<FoodProducts> obj)
+        {
+            // JavaScriptSerializer js = new JavaScriptSerializer().Deserialize<FoodProducts>(obj);
+            List<FoodProducts> lstFoodProducts = new List<FoodProducts>();
+
+            try
+            {
+                lstFoodProducts = objBAL.BannerUpload(obj);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (lstFoodProducts.Count > 0)
+                return Ok(lstFoodProducts);
+
+            else
+                return NotFound();
+        }
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetBanner(long CompanyId)
+        {
+
+            List<FoodProducts> lst = new List<FoodProducts>();
+            try
+            {
+                lst = objBAL.GetBanners(CompanyId);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (lst.Count > 0)
+                return Ok(lst);
+
+            else
+                return NotFound();
+        }
     }
 }

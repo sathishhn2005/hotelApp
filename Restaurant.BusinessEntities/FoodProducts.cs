@@ -22,7 +22,8 @@ namespace Restaurant.BusinessEntities
         private decimal taxPercent = Decimal.Zero;
         private string isDiscountable = String.Empty;
         private byte[] imageSource;
-        
+        private string type;
+
         #endregion
 
         public byte[] ImageSource
@@ -153,7 +154,11 @@ namespace Restaurant.BusinessEntities
             get { return categoryName; }
             set { categoryName = value; }
         }
-
+        public string Type
+        {
+            get { return type; }
+            set { type = value; }
+        }
 
         #endregion
 
