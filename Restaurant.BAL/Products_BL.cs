@@ -11,6 +11,7 @@ using System.Data;
 using System.Text;
 using System.Security.Cryptography;
 using Razorpay.Api;
+using System.ComponentModel;
 
 namespace Restaurant.BAL
 {
@@ -160,9 +161,10 @@ namespace Restaurant.BAL
                 {
                     TotalAmt += item.TotalAmount;
                 }
+                Receipt = ReceiptGeneration();
                 if (obj[0].PaymentType.Equals("ONLINE"))
                 {
-                    Receipt = ReceiptGeneration();
+
 
                     Dictionary<string, object> input = new Dictionary<string, object>
                     {
@@ -343,6 +345,9 @@ namespace Restaurant.BAL
             using TransactionScope transactionScope = new TransactionScope();
             try
             {
+                obj.StartDate = Convert.ToDateTime(obj.Sdate);
+                obj.EndDate = Convert.ToDateTime(obj.Edate);
+                // obj.StartDate = obj.EndDate;
                 returnCode = objDAL.Renewal(obj);
                 transactionScope.Complete();
                 transactionScope.Dispose();
@@ -477,23 +482,24 @@ namespace Restaurant.BAL
 
             return returnCode;
         }
-        public long GetOrderedDetails(long CompnId, int flag, out List<Billing> lstOrderedDetails)
+        public long GetOrderedDetails(long CompnId, int flag, out List<Billing> lstOrderedDetails, out Billing obj)
         {
             long returnCode = -1;
-
+            obj = new Billing();
             using TransactionScope transactionScope = new TransactionScope();
             try
             {
                 returnCode = objDAL.GetOrderDetails(CompnId, flag, out lstOrderedDetails);
-                
+
                 if (lstOrderedDetails.Count > 0)
                 {
                     foreach (var item in lstOrderedDetails)
                     {
-                        item.TotalOrders = lstOrderedDetails.Count;
-                        item.TotalQtySales += item.Quantity;
-                        item.TotalRevenue += item.UnitPrice;
+                        obj.TotalOrders = lstOrderedDetails.Count;
+                        obj.TotalQtySales += item.Quantity;
+                        obj.TotalRevenue += item.UnitPrice * item.Quantity ;
                     }
+
                 }
                 transactionScope.Complete();
                 transactionScope.Dispose();
@@ -547,5 +553,25 @@ namespace Restaurant.BAL
 
             return lst;
         }
+        public long GetPaymentHist(out List<Admin> lst, long CompanyId)
+        {
+            long returnCode = -1;
+            using TransactionScope transactionScope = new TransactionScope();
+            try
+            {
+                returnCode = objDAL.GetPaymentHistory(out lst, CompanyId);
+                transactionScope.Complete();
+                transactionScope.Dispose();
+
+            }
+            catch (Exception ex)
+            {
+                transactionScope.Dispose();
+                throw ex;
+            }
+
+            return returnCode;
+        }
+
     }
 }

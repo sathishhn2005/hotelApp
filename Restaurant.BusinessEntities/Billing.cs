@@ -16,6 +16,7 @@ namespace Restaurant.BusinessEntities
         private string description = string.Empty;
 
         private string razorOrderDetailsId = string.Empty;
+        private string address = string.Empty;
         private string paymentStatus = string.Empty;
         private string paymentType = string.Empty;
         private string foodName = string.Empty;
@@ -87,6 +88,7 @@ namespace Restaurant.BusinessEntities
         public string Description { get { return description; } set { description = value; } }
         public DateTime CreatedAt { get { return createdAt; } set { createdAt = value; } }
         public string ModifiedBy { get { return modifiedBy; } set { modifiedBy = value; } }
+        public string Address { get { return address; } set { address = value; } }
         public DateTime ModifiedAt { get { return modifiedAt; } set { modifiedAt = value; } }
 
     }

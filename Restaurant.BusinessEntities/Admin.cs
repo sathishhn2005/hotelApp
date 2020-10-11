@@ -12,6 +12,8 @@ namespace Restaurant.BusinessEntities
         private long companyID = 0;
         private long cost = 0;
         private long adminSubscriptionId = 0;
+        private long adminSubscriptionHistoryId = 0;
+        
         private string phoneNumber = string.Empty;
         private string address = string.Empty;
         private string userName = string.Empty;
@@ -37,6 +39,8 @@ namespace Restaurant.BusinessEntities
         private string comments = string.Empty;
 
         public long AdminId { get { return adminId; } set { adminId = value; } }
+        public long AdminSubscriptionHistoryId { get { return adminSubscriptionHistoryId; } set { adminSubscriptionHistoryId = value; } }
+        
         public long CompanyID { get { return companyID; } set { companyID = value; } }
         public string CompanyName { get { return companyName; } set { companyName = value; } }
         public string AdminName { get { return adminName; } set { adminName = value; } }

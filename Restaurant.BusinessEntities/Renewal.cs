@@ -10,6 +10,8 @@ namespace Restaurant.BusinessEntities
         private long companyID = 0;
         private DateTime startDate = DateTime.MaxValue;
         private DateTime endDate = DateTime.MaxValue;
+        private string sdate = string.Empty;
+        private string edate = string.Empty;
         private int totalDays = 0;
         private int tax = 0;
         private long totalAmount = 0;
@@ -54,8 +56,17 @@ namespace Restaurant.BusinessEntities
             get { return totalDays; }
             set { totalDays = value; }
         }
+        public string Sdate
+        {
+            get { return sdate; }
+            set { sdate = value; }
+        }
+        public string Edate
+        {
+            get { return edate; }
+            set { edate = value; }
+        }
 
-
-
+       
     }
 }
