@@ -28,7 +28,10 @@ namespace Restaurant.BusinessEntities
         private DateTime accRegisteredDate = DateTime.MaxValue;
         private DateTime startDate = DateTime.MaxValue;
         private DateTime endDate = DateTime.MaxValue;
+        private string sDate = string.Empty;
+        private string eDate = string.Empty;
         private int totalDays = 0;
+        private int daysLeft = 0;
         private long price = 0;
         private long totalAmount = 0;
         private int tax = 0;
@@ -44,6 +47,8 @@ namespace Restaurant.BusinessEntities
         public long CompanyID { get { return companyID; } set { companyID = value; } }
         public string CompanyName { get { return companyName; } set { companyName = value; } }
         public string AdminName { get { return adminName; } set { adminName = value; } }
+        public string SDate { get { return sDate; } set { sDate = value; } }
+        public string EDate { get { return eDate; } set { eDate = value; } }
         public string PhoneNumber { get { return phoneNumber; } set { phoneNumber = value; } }
         public string Address { get { return address; } set { address = value; } }
         public string UserName { get { return userName; } set { userName = value; } }
@@ -67,5 +72,6 @@ namespace Restaurant.BusinessEntities
         public long CostPerDay { get { return costPerDay; } set { costPerDay = value; } }
        
         public bool Pause { get => pause; set => pause = value; }
+        public int DaysLeft { get => daysLeft; set => daysLeft = value; }
     }
 }

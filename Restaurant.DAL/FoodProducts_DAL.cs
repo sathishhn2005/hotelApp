@@ -352,7 +352,9 @@ namespace Restaurant.DAL
             DataSet ds = new DataSet();
             try
             {
-                int Tdays = Convert.ToInt32(item.EndDate - item.StartDate);
+                //int Tdays = Convert.ToInt32(item.EndDate - item.StartDate);
+                TimeSpan difference = item.EndDate - item.StartDate;
+                var Tdays = difference.TotalDays;
                 string Status = string.Empty;
                 if (item.Pause.Equals("false"))
                     Status = "InActive";

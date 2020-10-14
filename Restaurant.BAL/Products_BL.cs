@@ -405,7 +405,8 @@ namespace Restaurant.BAL
         public List<Admin> AdminRegister(Admin obj)
         {
             List<Admin> lst = new List<Admin>();
-
+            obj.StartDate = Convert.ToDateTime(obj.SDate);
+            obj.EndDate = Convert.ToDateTime(obj.EDate);
             using TransactionScope transactionScope = new TransactionScope();
             try
             {
