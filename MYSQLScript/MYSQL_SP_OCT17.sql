@@ -34,7 +34,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_GetBillingDetails`(in CompnID lo
 BEGIN
 
 declare TaxAmt int;
-set TaxAmt=(select distinct Tax FROM TB_ADMINSUBSCRIPTIONPAYMENTDETAILS);
+set TaxAmt=(select distinct Tax FROM TB_ADMINSUBSCRIPTIONPAYMENTDETAILS where CompanyID=CompnID);
 select TaxAmt as Tax,FP.Price as UnitPrice,DOB,PlaceOrderId,PO.FoodProductId,FoodName,PO.CompanyID,PO.CustomerID,PO.CustomerName,PO.PhoneNumber,PO.TotalAmount,PO.Quantity,PO.Tax,PO.TableNo,PO.RazorOrderDetailsId
 ,PO.RazorPaymentId,PaymentStatus,PaymentType,PO.Comments,'pending' as Status,PO.CreatedAt as CreatedAt,PO.Comments as Comments
  From tb_placeorder PO
