@@ -503,6 +503,60 @@ namespace RestaurantAPI.Controllers
             else
                 return NotFound();
         }
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult UpdatePaymntHis(Admin obj)
+        {
+            long returnCode = -1;
+            try
+            {
+                returnCode = objBAL.UpdatePHis(obj);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (returnCode > 0)
+                return Ok(returnCode);
 
+            else
+                return NotFound();
+        }
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult UpdateOrderDetails([FromBody] Billing obj)
+        {
+            try
+            {
+                long returnCode = objBAL.UpdatePlaceOrder(obj);
+                objBAL.GetOrderedDetails(obj.CompanyID, obj.Flag, out List<Billing> lstOrderedDetails, out Billing objj);
+                if (obj.Flag.Equals(1))
+                {
+                    object[] arr = new object[2];
+
+                    arr[0] = lstOrderedDetails;
+                    arr[1] = objj;
+
+                    if (lstOrderedDetails.Count > 0)
+                        return Ok(arr);
+
+                    else
+                        return NotFound();
+                }
+                else
+                {
+                    if (lstOrderedDetails.Count > 0)
+                        return Ok(lstOrderedDetails);
+
+                    else
+                        return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
     }
 }

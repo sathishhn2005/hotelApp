@@ -573,6 +573,44 @@ namespace Restaurant.BAL
 
             return returnCode;
         }
+        public long UpdatePHis(Admin obj)
+        {
+            long returnCode = -1;
+            using TransactionScope transactionScope = new TransactionScope();
+            try
+            {
+                returnCode = objDAL.UpdatePaymentHis(obj);
+                transactionScope.Complete();
+                transactionScope.Dispose();
 
+            }
+            catch (Exception ex)
+            {
+                transactionScope.Dispose();
+                throw ex;
+            }
+
+            return returnCode;
+        }
+        public long UpdatePlaceOrder(Billing obj)
+        {
+            long returnCode = -1;
+            using TransactionScope transactionScope = new TransactionScope();
+            try
+            {
+                returnCode = objDAL.UpdatePO(obj);
+                transactionScope.Complete();
+                transactionScope.Dispose();
+
+            }
+            catch (Exception ex)
+            {
+                transactionScope.Dispose();
+                throw ex;
+            }
+
+            return returnCode;
+        }
+        
     }
 }

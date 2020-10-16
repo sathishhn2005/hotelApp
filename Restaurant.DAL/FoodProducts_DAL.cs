@@ -383,6 +383,7 @@ namespace Restaurant.DAL
 
                     new MySqlParameter("Pausee", item.Pause),
                     new MySqlParameter("PType", item.Payments),
+                    new MySqlParameter("CompId", item.CompanyID),
 
 
                 };
@@ -715,7 +716,7 @@ namespace Restaurant.DAL
         public long GetPaymentHistory(out List<Admin> lst, long CompanyID)
         {
             long returnCode = -1;
-            CompanyID = 1;
+            
             lst = new List<Admin>();
             try
             {
@@ -731,6 +732,51 @@ namespace Restaurant.DAL
                     DTtoListConverter.ConvertTo(ds.Tables[0], out lst);
                     returnCode = 1;
                 }
+                return returnCode;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            // return returnCode;
+        }
+        public long UpdatePaymentHis(Admin obj)
+        {
+            long returnCode = -1;
+
+            try
+            {
+                List<MySqlParameter> parameters = new List<MySqlParameter>
+                {
+                    new MySqlParameter("PymntStatus",obj.PaymentStatus),
+                    new MySqlParameter("ASHisId",obj.AdminSubscriptionHistoryId)
+                };
+
+                var output = sqlHelper.executeSP<int>(parameters, "SP_UpdatePaymentHistory");
+                returnCode = Convert.ToInt64(output);
+                return returnCode;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            // return returnCode;
+        }
+        public long UpdatePO(Billing obj)
+        {
+            long returnCode = -1;
+
+            try
+            {
+                List<MySqlParameter> parameters = new List<MySqlParameter>
+                {
+                    new MySqlParameter("OrderId",obj.RazorOrderDetailsId),
+                    new MySqlParameter("POStatus",obj.Status),
+
+                };
+
+                var output = sqlHelper.executeSP<int>(parameters, "SP_UpdatePO");
+                returnCode = Convert.ToInt64(output);
                 return returnCode;
             }
             catch (Exception ex)
